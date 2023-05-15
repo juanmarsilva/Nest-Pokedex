@@ -31,12 +31,14 @@ export class PokemonService {
   }
 
   async findAll(paginationDto: PaginationDto) {
-    const { limit, offset } = paginationDto;
+    const { limit = 650, offset = 0 } = paginationDto;
 
     return await this.pokemonModel
       .find()
-      .limit(limit ?? 20)
-      .skip(offset ?? 0);
+      .limit(limit)
+      .skip(offset)
+      .sort({ no: 1 }) // ordena de manera ascendente por esa columna
+      .select('-__v'); // saco ese dato de la respuesta
   }
 
   async findOne(term: string) {
